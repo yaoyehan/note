@@ -1,0 +1,10 @@
+{
+  "theme-picker:open-theme-picker": [
+    {
+      "modifiers": [
+        "Ctrl"
+      ],
+      "key": "T"
+    }
+  ]
+}

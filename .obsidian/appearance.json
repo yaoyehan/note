@@ -1,0 +1,14 @@
+{
+  "cssTheme": "Catppuccin",
+  "baseFontSize": 22,
+  "theme": "moonstone",
+  "accentColor": "#60be61",
+  "textFontFamily": "LXGW WenKai",
+  "monospaceFontFamily": "Big Caslon",
+  "baseFontSizeAction": true,
+  "translucency": false,
+  "enabledCssSnippets": [
+    "stats"
+  ],
+  "interfaceFontFamily": "Arial Black"
+}

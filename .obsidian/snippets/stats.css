@@ -1,0 +1,41 @@
+/*实时编辑*/
+.theme-light .markdown-source-view div.cm-line span.cm-highlight {
+	background-color: #ff9800;
+	color: white;
+	border-radius: 5px;
+	padding: 2px 4px;
+	display: inline-block;
+	line-height: 1.4;
+	vertical-align: baseline;
+}
+
+.theme-dark .markdown-source-view div.cm-line span.cm-highlight {
+	background-color: #ff8533;
+	color: white;
+	padding: 2px 4px;
+	border-radius: 5px;
+	display: inline-block;
+	line-height: 1.4;
+	vertical-align: baseline;
+}
+
+/*阅读模式*/
+.theme-light div p mark {
+	background-color: #ff9800;
+	color: white;
+	border-radius: 5px;
+	padding: 2px 4px;
+	display: inline-block;
+	line-height: 1.4;
+	vertical-align: baseline;
+}
+
+.theme-dark div p mark {
+	background-color: #ff8533;
+	color: white;
+	border-radius: 5px;
+	padding: 2px 4px;
+	display: inline-block;
+	line-height: 1.4;
+	vertical-align: baseline;
+}
