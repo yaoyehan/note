@@ -6,6 +6,9 @@
   "dataview",
   "table-editor-obsidian",
   "obsidian-minimal-settings",
+  "obsidian-icon-folder",
+  "obsidian-admonition",
+  "recent-files-obsidian",
   "obsidian-git",
-  "obsidian-icon-folder"
+  "editing-toolbar"
 ]
