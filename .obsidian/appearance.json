@@ -4,7 +4,7 @@
   "theme": "obsidian",
   "accentColor": "#60be61",
   "textFontFamily": "LXGW WenKai",
-  "monospaceFontFamily": "Big Caslon",
+  "monospaceFontFamily": "Andale Mono",
   "baseFontSizeAction": true,
   "translucency": false,
   "enabledCssSnippets": [
