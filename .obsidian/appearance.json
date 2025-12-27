@@ -8,7 +8,8 @@
   "baseFontSizeAction": true,
   "translucency": false,
   "enabledCssSnippets": [
-    "stats"
+    "stats",
+    "page-width"
   ],
   "interfaceFontFamily": "Arial Black"
 }
