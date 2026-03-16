@@ -4,21 +4,21 @@
     "type": "split",
     "children": [
       {
-        "id": "48eb591c6ace1d9a",
+        "id": "bdba52eb991e8e52",
         "type": "tabs",
         "children": [
           {
-            "id": "74b13e61d9e7e428",
+            "id": "a0cec4e7ddc115c2",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Ai相关/Ai杂记.md",
-                "mode": "source",
+                "file": "Ai相关/PyTorch深度学习实践/Pytorch学习笔记.md",
+                "mode": "preview",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Ai杂记"
+              "title": "Pytorch学习笔记"
             }
           }
         ]
@@ -234,26 +234,43 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "74b13e61d9e7e428",
+  "active": "a0cec4e7ddc115c2",
   "lastOpenFiles": [
-    "Ai相关/AI Prompt--Google.md",
-    "Ai相关/Ai杂记.md",
-    "java/jdk版本更新.md",
+    "Pasted image 20260315163908.png",
     "数据库相关/sql.md",
-    "Ai相关/images/3.尝试切换不同的表述方式.png",
-    "java/杂记.md",
+    "Ai相关/PyTorch深度学习实践/Pytorch学习笔记.md",
+    "Ai相关/images/正向传播和反向传播.png",
+    "Ai相关/images/线性函数叠加.png",
     "日志相关/ELK.md",
     "组件/k8s.md",
-    "Ai相关/images/2.缩短提示词.png",
-    "Pasted image 20251227161808.png",
-    "Ai相关/images",
+    "问题排查/发货单明细(sm_order_delivery_item)ID重复问题分析.md",
+    "Ai相关/images/平方差损失函数.png",
+    "Ai相关/Ai杂记.md",
     "Ai相关/images/1.提示词特异性.png",
-    "Pasted image 20251227161457.png",
+    "2025-12-18.md",
+    "Ai相关/AI Prompt--Google.md",
+    "Ai相关/images/混合注意力示意图.png",
+    "Ai相关/images/多教师在线策略蒸馏示意图.png",
+    "Ai相关/images/3.尝试切换不同的表述方式.png",
+    "Ai相关/images/2.缩短提示词.png",
+    "问题排查/images/发货单id重复排查日志4.png",
+    "问题排查/images/发货单id重复排查日志2.png",
+    "ў=x*ω.md",
+    "Ai相关/PyTorch深度学习实践",
+    "未命名.md",
+    "Excalidraw/Drawing 2025-12-30 15.19.01.excalidraw.md",
+    "未命名",
+    "java/如何编写一个SDK？.md",
+    "java/杂记.md",
+    "java/jdk版本更新.md",
+    "问题排查/images",
+    "问题排查",
+    "java/images",
+    "Excalidraw",
+    "Ai相关/images",
     "Ai相关",
     "组件",
-    "2025-12-18.md",
     "数据库相关",
-    "java",
     "未命名.canvas",
     "copilot/copilot-conversations/你好@20251130_204029.md",
     "copilot/copilot-conversations/你好@20251130_203901.md",
@@ -266,24 +283,7 @@
     "copilot/copilot-custom-prompts/Make shorter.md",
     "copilot/copilot-custom-prompts/Make longer.md",
     "copilot/copilot-custom-prompts/Generate table of contents.md",
-    "copilot/copilot-custom-prompts/Generate glossary.md",
-    "copilot/copilot-custom-prompts/Fix grammar and spelling.md",
-    "copilot/copilot-custom-prompts/Explain like I am 5.md",
-    "copilot/copilot-custom-prompts/Emojify.md",
-    "copilot/copilot-custom-prompts",
-    "copilot/copilot-conversations",
-    "copilot",
-    "Excalidraw/Drawing 2025-11-30 18.29.11.excalidraw.md",
-    "Excalidraw",
-    "2025-11-30.md",
-    "conflict-files-obsidian-git.md",
-    "日志相关/images/架构优化3.png",
-    "日志相关/images/Kafka接入日志系统.png",
-    "日志相关/images/featbeat导致日志丢失.png",
-    "日志相关/images/Filebeat输入输出结构图.png",
-    "日志相关/images/ELK-Featbeat版.png",
     "未命名/canvas/未命名.canvas",
-    "日志相关/canvas",
     "未命名 1.canvas"
   ]
 }

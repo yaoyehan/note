@@ -1,6 +1,6 @@
 {
-  "cssTheme": "Catppuccin",
-  "baseFontSize": 22,
+  "cssTheme": "Obsidian Nord",
+  "baseFontSize": 21,
   "theme": "obsidian",
   "accentColor": "#60be61",
   "textFontFamily": "LXGW WenKai",
@@ -9,7 +9,10 @@
   "translucency": false,
   "enabledCssSnippets": [
     "stats",
-    "page-width"
+    "page-width",
+    "code-theme",
+    "note-code-theme",
+    "codeBlock"
   ],
   "interfaceFontFamily": "Arial Black"
 }
