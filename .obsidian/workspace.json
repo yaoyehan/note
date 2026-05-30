@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Ai相关/Ai杂记.md",
+                "file": "Ai相关/LangChain.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Ai杂记"
+              "title": "LangChain"
             }
           }
         ]
@@ -236,10 +236,10 @@
   },
   "active": "a0cec4e7ddc115c2",
   "lastOpenFiles": [
+    "Ai相关/Ai杂记.md",
     "Ai相关/LangChain.md",
     "Ai相关/AI Prompt--Google.md",
     "Ai相关/Ai面试知识库.md",
-    "Ai相关/Ai杂记.md",
     "Ai相关/PyTorch深度学习实践/Pytorch学习笔记.md",
     "Ai相关/images/计划并执行.png",
     "Ai相关/images/retrieval.png",
