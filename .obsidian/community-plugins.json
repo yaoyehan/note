@@ -1,14 +1,14 @@
 [
-  "obsidian-style-settings",
-  "share-note",
-  "theme-picker",
-  "obsidian-excalidraw-plugin",
-  "dataview",
-  "table-editor-obsidian",
-  "obsidian-minimal-settings",
-  "obsidian-icon-folder",
   "obsidian-admonition",
-  "recent-files-obsidian",
+  "table-editor-obsidian",
+  "dataview",
+  "editing-toolbar",
+  "obsidian-excalidraw-plugin",
   "obsidian-git",
-  "editing-toolbar"
+  "obsidian-icon-folder",
+  "obsidian-minimal-settings",
+  "recent-files-obsidian",
+  "share-note",
+  "obsidian-style-settings",
+  "theme-picker"
 ]

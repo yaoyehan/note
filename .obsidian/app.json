@@ -1,5 +1,4 @@
 {
-  "alwaysUpdateLinks": true,
-  "promptDelete": false,
-  "attachmentFolderPath": "Ai相关/images"
+  "attachmentFolderPath": "Ai相关/images",
+  "alwaysUpdateLinks": true
 }

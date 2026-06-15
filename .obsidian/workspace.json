@@ -1,24 +1,24 @@
 {
   "main": {
-    "id": "2426d10a8edabe34",
+    "id": "a8c234a570626ac4",
     "type": "split",
     "children": [
       {
-        "id": "bdba52eb991e8e52",
+        "id": "7c74be1bb293a85a",
         "type": "tabs",
         "children": [
           {
-            "id": "a0cec4e7ddc115c2",
+            "id": "617fb04d231cbc17",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Ai相关/LangChain.md",
+                "file": "Ai相关/Ai面试知识库.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "LangChain"
+              "title": "Ai面试知识库"
             }
           }
         ]
@@ -27,15 +27,15 @@
     "direction": "vertical"
   },
   "left": {
-    "id": "3d7e29ae800de198",
+    "id": "9cd3491fb9771ace",
     "type": "split",
     "children": [
       {
-        "id": "43e5ef5a0a9a4866",
+        "id": "5a45a18232e59c86",
         "type": "tabs",
         "children": [
           {
-            "id": "33435ed357673bc0",
+            "id": "83fc387d5b84a5cf",
             "type": "leaf",
             "state": {
               "type": "file-explorer",
@@ -48,7 +48,7 @@
             }
           },
           {
-            "id": "9411e0ca56208f68",
+            "id": "9efaaf7c4fc028cf",
             "type": "leaf",
             "state": {
               "type": "search",
@@ -65,7 +65,7 @@
             }
           },
           {
-            "id": "06887e6f4fd285d2",
+            "id": "0cb422142ca17ffb",
             "type": "leaf",
             "state": {
               "type": "bookmarks",
@@ -75,13 +75,13 @@
             }
           },
           {
-            "id": "2dd7e4e32ee78867",
+            "id": "0010db86a9dc9ff9",
             "type": "leaf",
             "state": {
               "type": "recent-files",
               "state": {},
-              "icon": "lucide-ghost",
-              "title": "recent-files"
+              "icon": "clock",
+              "title": "Recent files"
             }
           }
         ]
@@ -91,20 +91,20 @@
     "width": 300
   },
   "right": {
-    "id": "6bf8699999551150",
+    "id": "aa473b42bc2c3030",
     "type": "split",
     "children": [
       {
-        "id": "422c727bc5cc1175",
+        "id": "b1c5279195915f3c",
         "type": "tabs",
         "children": [
           {
-            "id": "6ecd8adb08572144",
+            "id": "90cbc88be07be459",
             "type": "leaf",
             "state": {
               "type": "backlink",
               "state": {
-                "file": "日志相关/ELK.md",
+                "file": "Ai相关/Ai面试知识库.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -114,32 +114,32 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "ELK 的反向链接列表"
+              "title": "Ai面试知识库 的反向链接列表"
             }
           },
           {
-            "id": "58b6f509b5c22359",
+            "id": "936d5bf9e3d7ae71",
             "type": "leaf",
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "日志相关/ELK.md",
+                "file": "Ai相关/Ai面试知识库.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "ELK 的出链列表"
+              "title": "Ai面试知识库 的出链列表"
             }
           },
           {
-            "id": "fc5dda9aa4fd6896",
+            "id": "5a3e4185ba59716d",
             "type": "leaf",
             "state": {
               "type": "tag",
               "state": {
                 "sortOrder": "frequency",
                 "useHierarchy": true,
-                "showSearch": true,
+                "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-tags",
@@ -147,7 +147,7 @@
             }
           },
           {
-            "id": "a8338b420b8b0441",
+            "id": "c2190f4bbe5d30cd",
             "type": "leaf",
             "state": {
               "type": "all-properties",
@@ -161,44 +161,22 @@
             }
           },
           {
-            "id": "4d1d73eda392f31f",
+            "id": "fe67b74339989996",
             "type": "leaf",
             "state": {
               "type": "outline",
               "state": {
-                "file": "日志相关/ELK.md",
+                "file": "Ai相关/Ai面试知识库.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "ELK 的大纲"
+              "title": "Ai面试知识库 的大纲"
             }
           },
           {
-            "id": "a38c4e163ad486ae",
-            "type": "leaf",
-            "state": {
-              "type": "footnotes",
-              "state": {
-                "file": "日志相关/ELK.md"
-              },
-              "icon": "lucide-file-signature",
-              "title": "脚注"
-            }
-          },
-          {
-            "id": "491056a775d6ecb0",
-            "type": "leaf",
-            "state": {
-              "type": "advanced-tables-toolbar",
-              "state": {},
-              "icon": "lucide-ghost",
-              "title": "advanced-tables-toolbar"
-            }
-          },
-          {
-            "id": "b85fa76f07ccce43",
+            "id": "2a23a666223b5d84",
             "type": "leaf",
             "state": {
               "type": "git-view",
@@ -208,81 +186,36 @@
             }
           }
         ],
-        "currentTab": 7
+        "currentTab": 5
       }
     ],
     "direction": "horizontal",
-    "width": 200
+    "width": 300
   },
   "left-ribbon": {
     "hiddenItems": {
-      "bases:新建数据库": false,
       "switcher:打开快速切换": false,
       "graph:查看关系图谱": false,
       "canvas:新建白板": false,
       "daily-notes:打开/创建今天的日记": false,
       "templates:插入模板": false,
       "command-palette:打开命令面板": false,
-      "markdown-importer:打开 Markdown 格式转换器": false,
-      "workspaces:管理工作区布局": false,
-      "publish:发布更改": false,
-      "audio-recorder:开始/结束录音": false,
-      "random-note:开始漫游笔记": false,
-      "zk-prefixer:创建时间戳笔记": false,
-      "obsidian-excalidraw-plugin:New drawing": false,
+      "bases:新建数据库": false,
       "table-editor-obsidian:Advanced Tables Toolbar": false,
+      "obsidian-excalidraw-plugin:新建绘图文件": false,
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "a0cec4e7ddc115c2",
+  "active": "83fc387d5b84a5cf",
   "lastOpenFiles": [
     "Ai相关/Ai杂记.md",
     "Ai相关/LangChain.md",
-    "Ai相关/AI Prompt--Google.md",
     "Ai相关/Ai面试知识库.md",
     "Ai相关/PyTorch深度学习实践/Pytorch学习笔记.md",
-    "Ai相关/images/计划并执行.png",
-    "Ai相关/images/retrieval.png",
-    "Ai相关/images/Model IO.png",
-    "Ai相关/images/RAG.png",
-    "Ai相关/images/Rag.png",
-    "Ai相关/images/Pasted image 20260328234810.png",
-    "Ai相关/images/langchain v0.2框架图.png",
-    "Ai相关/images/框架对比.png",
-    "Ai相关/images/langchain v0.1框架图.png",
-    "Ai相关/images/RNN示意图.png",
+    "Ai相关/images/Pasted image 20260322172951.png",
     "数据库相关/sql.md",
-    "日志相关/ELK.md",
     "组件/k8s.md",
-    "问题排查/发货单明细(sm_order_delivery_item)ID重复问题分析.md",
-    "2025-12-18.md",
-    "ў=x*ω.md",
-    "Ai相关/PyTorch深度学习实践",
-    "未命名.md",
-    "Excalidraw/Drawing 2025-12-30 15.19.01.excalidraw.md",
-    "未命名",
-    "java/如何编写一个SDK？.md",
-    "java/杂记.md",
-    "java/jdk版本更新.md",
-    "问题排查/images",
-    "问题排查",
-    "java/images",
-    "Excalidraw",
-    "Ai相关/images",
-    "Ai相关",
-    "组件",
-    "数据库相关",
-    "未命名.canvas",
-    "copilot/copilot-conversations/你好@20251130_204029.md",
-    "copilot/copilot-conversations/你好@20251130_203901.md",
-    "copilot/copilot-custom-prompts/Translate to Chinese.md",
-    "copilot/copilot-custom-prompts/Summarize.md",
-    "copilot/copilot-custom-prompts/Simplify.md",
-    "copilot/copilot-custom-prompts/Rewrite as tweet.md",
-    "copilot/copilot-custom-prompts/Rewrite as tweet thread.md",
-    "copilot/copilot-custom-prompts/Remove URLs.md",
-    "copilot/copilot-custom-prompts/Make shorter.md",
-    "未命名/canvas/未命名.canvas",
-    "未命名 1.canvas"
+    "Ai相关/AI Prompt--Google.md",
+    "日志相关/ELK.md"
   ]
 }

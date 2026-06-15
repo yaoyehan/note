@@ -1,18 +1,9 @@
 {
   "cssTheme": "Obsidian Nord",
-  "baseFontSize": 21,
-  "theme": "obsidian",
-  "accentColor": "#60be61",
-  "textFontFamily": "LXGW WenKai",
-  "monospaceFontFamily": "Andale Mono",
-  "baseFontSizeAction": true,
-  "translucency": false,
+  "accentColor": "#b5eea5",
   "enabledCssSnippets": [
-    "stats",
-    "page-width",
-    "code-theme",
     "note-code-theme",
-    "codeBlock"
-  ],
-  "interfaceFontFamily": "Arial Black"
+    "page-width",
+    "stats"
+  ]
 }
