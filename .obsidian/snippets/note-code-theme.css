@@ -1,0 +1,410 @@
+/**
+ * Aurora Dark — 笔记代码片段主题 v4
+ * 修复：笔记工具（Obsidian / Typora / Bear）CSS 覆盖问题
+ *
+ * 关键修复：
+ *   1. background-color 与 background-image 拆分，各加 !important
+ *   2. 关键视觉属性（颜色、字体、行高）全部加 !important
+ *   3. 添加 Obsidian / Typora 专属选择器增强兼容性
+ *
+ * 配套脚本：note-code-theme.js（Copy 按钮）
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&display=swap');
+
+/* ══════════════════════════════════════════════
+   0. 全局重置 — 防止笔记工具继承污染
+══════════════════════════════════════════════ */
+pre, pre *, pre code, pre code * {
+    box-sizing: border-box;
+}
+
+/* ══════════════════════════════════════════════
+   1. 代码块外壳
+══════════════════════════════════════════════ */
+pre,
+.markdown-preview-view pre,
+.markdown-rendered pre,
+.cm-s-obsidian pre {
+    position: relative !important;
+    margin: 1.4em 0 !important;
+    padding: 0 !important;
+    background-color: #161c2d !important;
+    border: 1px solid #2a3356 !important;
+    border-radius: 10px !important;
+    box-shadow:
+        0 2px 4px rgba(0, 0, 0, .5),
+        0 8px 32px rgba(0, 0, 0, .35),
+        inset 0 1px 0 rgba(255, 255, 255, .05) !important;
+    overflow: hidden !important;
+    /* 重置笔记工具常见覆盖 */
+    border-left: 1px solid #2a3356 !important;
+    border-top: 1px solid #2a3356 !important;
+}
+
+/* ── macOS 标题栏 ── */
+pre::before,
+.markdown-preview-view pre::before,
+.markdown-rendered pre::before {
+    content: '' !important;
+    display: block !important;
+    height: 38px !important;
+    background-color: #1a2035 !important;
+    border-bottom: 1px solid #222b45 !important;
+    background-image:
+        radial-gradient(circle at center, #ff5f57 48%, transparent 52%),
+        radial-gradient(circle at center, #febc2e 48%, transparent 52%),
+        radial-gradient(circle at center, #28c840 48%, transparent 52%) !important;
+    background-size:    10px 10px, 10px 10px, 10px 10px !important;
+    background-position: 15px 14px, 33px 14px, 51px 14px !important;
+    background-repeat: no-repeat !important;
+    /* 重置 */
+    border-radius: 0 !important;
+    border-left: none !important;
+    border-right: none !important;
+    border-top: none !important;
+}
+
+/* ══════════════════════════════════════════════
+   2. 语言标签
+══════════════════════════════════════════════ */
+pre[data-lang]::after,
+.markdown-preview-view pre[data-lang]::after,
+.markdown-rendered pre[data-lang]::after {
+    content: attr(data-lang) !important;
+    position: absolute !important;
+    top: 10px !important;
+    right: 82px !important;
+    font-family: 'JetBrains Mono', monospace !important;
+    font-size: 0.63rem !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.1em !important;
+    text-transform: uppercase !important;
+    color: #495270 !important;
+    background-color: rgba(255, 255, 255, .04) !important;
+    padding: 2px 7px !important;
+    border-radius: 4px !important;
+    border: 1px solid #2a3356 !important;
+    pointer-events: none !important;
+    line-height: 18px !important;
+}
+
+/* ══════════════════════════════════════════════
+   3. Copy 按钮（由 note-code-theme.js 注入）
+══════════════════════════════════════════════ */
+.code-copy-btn {
+    position: absolute !important;
+    top: 7px !important;
+    right: 12px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 5px !important;
+    padding: 3px 10px 3px 8px !important;
+    height: 24px !important;
+    font-family: 'JetBrains Mono', monospace !important;
+    font-size: 0.62rem !important;
+    font-weight: 500 !important;
+    letter-spacing: 0.04em !important;
+    color: #495270 !important;
+    background-color: rgba(255, 255, 255, .04) !important;
+    background-image: none !important;
+    border: 1px solid #2a3356 !important;
+    border-radius: 5px !important;
+    cursor: pointer !important;
+    user-select: none !important;
+    z-index: 10 !important;
+    outline: none !important;
+    transition: color .18s ease, background-color .18s ease, border-color .18s ease, transform .12s ease;
+}
+.code-copy-btn:hover {
+    color: #89b4fa !important;
+    background-color: rgba(137, 180, 250, .1) !important;
+    border-color: rgba(137, 180, 250, .35) !important;
+}
+.code-copy-btn:active { transform: scale(.94); }
+.code-copy-btn.copied {
+    color: #a6e3a1 !important;
+    background-color: rgba(166, 227, 161, .1) !important;
+    border-color: rgba(166, 227, 161, .35) !important;
+    pointer-events: none !important;
+}
+.code-copy-btn svg {
+    width: 11px !important;
+    height: 11px !important;
+    flex-shrink: 0 !important;
+    stroke: currentColor !important;
+    fill: none !important;
+    stroke-width: 1.8 !important;
+    stroke-linecap: round !important;
+    stroke-linejoin: round !important;
+}
+
+/* ══════════════════════════════════════════════
+   4. 代码内容区域
+   关键：background-color 与 background-image 拆分
+   —— background-color 设暗色兜底，渐变叠加在上方
+══════════════════════════════════════════════ */
+pre code,
+pre code.hljs,
+pre[class*="language-"] code,
+.markdown-preview-view pre code,
+.markdown-rendered pre code,
+.cm-s-obsidian pre code {
+    /* ① 先用 background-color 锁死暗色底，!important 防覆盖 */
+    background-color: #161c2d !important;
+
+    /* ② 滚动阴影：只有 background-image 层，透明处透出上面的 #161c2d */
+    /*
+     * 滚动阴影原理：
+     *   local 层（遮罩）随内容滚动 — 到达边缘时与 scroll 层对齐，将其完全遮住
+     *   scroll 层（光晕）固定在视口边缘 — 有内容可滚时从遮罩后方露出
+     *
+     * 关键约束：mask-size(56px) > glow-size(44px)
+     *   且遮罩在 0-44px 范围内保持纯色（hard stop），彻底覆盖光晕
+     *   → 不可滚动时光晕完全隐藏；可滚动时光晕正常显示
+     */
+    background-image:
+        /* 左遮罩：0-44px 纯暗色，44-56px 渐隐 */
+        linear-gradient(to right, #161c2d, #161c2d 44px, transparent 56px),
+        /* 右遮罩 */
+        linear-gradient(to left,  #161c2d, #161c2d 44px, transparent 56px),
+        /* 左光晕：44px 内渐变，local 遮罩移走后才可见 */
+        linear-gradient(to right, rgba(137, 180, 250, .2), transparent),
+        /* 右光晕 */
+        linear-gradient(to left,  rgba(137, 180, 250, .2), transparent) !important;
+    background-size:       56px 100%, 56px 100%, 44px 100%, 44px 100% !important;
+    background-position:   left, right, left, right !important;
+    background-repeat:     no-repeat !important;
+    background-attachment: local, local, scroll, scroll !important;
+
+    display: block !important;
+    overflow-x: auto !important;
+    padding: 1.2em 1.5em !important;
+
+    font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code',
+                 Consolas, 'Source Code Pro', monospace !important;
+    font-size: 0.78rem !important;
+    line-height: 1.72 !important;
+    color: #cdd6f4 !important;
+    tab-size: 4 !important;
+    -webkit-font-smoothing: antialiased !important;
+    font-variant-ligatures: contextual !important;
+    letter-spacing: 0.018em !important;
+    white-space: pre !important;
+
+    /* 重置笔记工具常见覆盖 */
+    border: none !important;
+    border-radius: 0 !important;
+    margin: 0 !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+}
+
+/* 自定义滚动条 */
+pre code::-webkit-scrollbar        { height: 4px; }
+pre code::-webkit-scrollbar-track  { background: transparent; }
+pre code::-webkit-scrollbar-thumb  { background: #2e3b5e; border-radius: 2px; }
+pre code::-webkit-scrollbar-thumb:hover { background: #415280; }
+
+/* ══════════════════════════════════════════════
+   5. 行内代码
+══════════════════════════════════════════════ */
+:not(pre) > code,
+.markdown-preview-view :not(pre) > code,
+.markdown-rendered :not(pre) > code {
+    font-family: 'JetBrains Mono', 'Fira Code', Consolas, monospace !important;
+    font-size: 0.82em !important;
+    padding: 0.15em 0.45em !important;
+    color: #cba6f7 !important;
+    background-color: rgba(203, 166, 247, .09) !important;
+    background-image: none !important;
+    border: 1px solid rgba(203, 166, 247, .22) !important;
+    border-radius: 4px !important;
+    white-space: nowrap !important;
+    font-variant-ligatures: none !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+}
+
+/* ══════════════════════════════════════════════
+   6. 选中高亮
+══════════════════════════════════════════════ */
+pre code ::selection      { background: rgba(137, 180, 250, .28) !important; }
+pre code ::-moz-selection { background: rgba(137, 180, 250, .28) !important; }
+
+/* ══════════════════════════════════════════════
+   7. 数学公式
+══════════════════════════════════════════════ */
+
+/* ── 7.1 行内数学代码（手写 <code class="math"> 或 .math-inline） ── */
+code.math, .math-inline {
+    font-family: 'STIX Two Math', KaTeX_Math, 'Cambria Math', serif !important;
+    font-size: 1em !important;
+    font-style: italic !important;
+    padding: 0.12em 0.55em !important;
+    color: #f9e2af !important;
+    background-color: rgba(249, 226, 175, .09) !important;
+    background-image: none !important;
+    border: 1px solid rgba(249, 226, 175, .22) !important;
+    border-radius: 4px !important;
+    white-space: nowrap !important;
+}
+
+/* ── 7.2 块级手写公式（<pre class="math">） ── */
+pre.math {
+    background-color: #16172a !important;
+    border: 1px solid rgba(249, 226, 175, .2) !important;
+    border-left: 3px solid rgba(249, 226, 175, .5) !important;
+    border-radius: 0 10px 10px 0 !important;
+}
+pre.math::before { display: none !important; }
+pre.math::after  { display: none !important; }
+pre.math code {
+    font-family: 'STIX Two Math', KaTeX_Math, 'Cambria Math', serif !important;
+    font-size: 1.05rem !important;
+    font-style: italic !important;
+    color: #f9e2af !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    text-align: center !important;
+    padding: 1.4em 2em !important;
+}
+
+/* ── 7.3 KaTeX 块级公式（$$...$$ 渲染后的容器） ── */
+.katex-display {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    /* 足够的内边距，让分数线、上标、求和号等不贴边 */
+    padding: 1.4em 2em !important;
+    margin: 12px 0 !important;
+    background-color: #16172a !important;
+    /* 四边完整边框，确保完全包裹公式 */
+    border: 1px solid rgba(249, 226, 175, .22) !important;
+    border-left: 3px solid rgba(249, 226, 175, .5) !important;
+    border-radius: 0 10px 10px 0 !important;
+    /* 水平溢出时可滚动，垂直方向保证可见 */
+    overflow-x: auto !important;
+    overflow-y: visible !important;
+    /* 确保容器高度自适应内容 */
+    min-height: fit-content !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, .2) !important;
+}
+
+/* KaTeX 块级公式内部：取消默认 margin，防止撑破容器 */
+.katex-display > .katex {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* .katex-display 内的 .katex-html 保证不被裁切 */
+.katex-display .katex-html {
+    overflow: visible !important;
+    white-space: nowrap !important;
+}
+
+/* ── 7.4 KaTeX 行内公式（$...$ 渲染后） ── */
+.katex {
+    color: #f9e2af !important;
+}
+
+/* 段落内行内 KaTeX 的包裹容器（非 display 模式） */
+p > .katex,
+span > .katex,
+li > .katex {
+    padding: 0.08em 0.1em !important;
+}
+
+/* ── 7.5 KaTeX 滚动条（块级公式过宽时） ── */
+.katex-display::-webkit-scrollbar        { height: 4px; }
+.katex-display::-webkit-scrollbar-track  { background: transparent; }
+.katex-display::-webkit-scrollbar-thumb  { background: #2e3b5e; border-radius: 2px; }
+.katex-display::-webkit-scrollbar-thumb:hover { background: #415280; }
+
+/* ══════════════════════════════════════════════
+   8. 当前行高亮
+══════════════════════════════════════════════ */
+.hl {
+    display: block !important;
+    margin: 0 -1.5em !important;
+    padding: 0 1.5em !important;
+    background-color: rgba(137, 180, 250, .09) !important;
+    border-left: 2px solid #89b4fa !important;
+}
+
+/* ══════════════════════════════════════════════
+   9. highlight.js 语法着色
+══════════════════════════════════════════════ */
+.hljs-keyword, .hljs-selector-tag,
+.hljs-built_in, .hljs-type         { color: #cba6f7 !important; font-style: italic; }
+.hljs-string, .hljs-template-string,
+.hljs-attr, .hljs-attribute        { color: #a6e3a1 !important; }
+.hljs-number, .hljs-literal        { color: #fab387 !important; }
+.hljs-comment, .hljs-quote         { color: #585b70 !important; font-style: italic; }
+.hljs-title, .hljs-title.function_ { color: #89b4fa !important; font-weight: 500; }
+.hljs-class .hljs-title,
+.hljs-title.class_                 { color: #f38ba8 !important; font-weight: 600; }
+.hljs-operator, .hljs-punctuation  { color: #89dceb !important; }
+.hljs-tag                          { color: #74c7ec !important; }
+.hljs-variable, .hljs-params       { color: #cdd6f4 !important; }
+.hljs-regexp                       { color: #f9e2af !important; }
+.hljs-meta, .hljs-meta .hljs-keyword { color: #f9e2af !important; font-style: italic; }
+.hljs-deletion  { color: #f38ba8 !important; background-color: rgba(243,139,168,.1) !important; }
+.hljs-addition  { color: #a6e3a1 !important; background-color: rgba(166,227,161,.1) !important; }
+
+/* ══════════════════════════════════════════════
+   10. Prism.js 语法着色
+══════════════════════════════════════════════ */
+.token.keyword, .token.rule          { color: #cba6f7 !important; font-style: italic; }
+.token.string, .token.char,
+.token.attr-value                    { color: #a6e3a1 !important; }
+.token.number, .token.boolean,
+.token.constant, .token.symbol       { color: #fab387 !important; }
+.token.comment, .token.prolog,
+.token.doctype, .token.cdata         { color: #585b70 !important; font-style: italic; }
+.token.function                      { color: #89b4fa !important; font-weight: 500; }
+.token.class-name                    { color: #f38ba8 !important; font-weight: 600; }
+.token.operator, .token.punctuation,
+.token.entity                        { color: #89dceb !important; }
+.token.tag, .token.atrule            { color: #74c7ec !important; }
+.token.variable, .token.parameter    { color: #cdd6f4 !important; }
+.token.regex, .token.important       { color: #f9e2af !important; }
+.token.attr-name, .token.property    { color: #f9e2af !important; }
+.token.inserted { color: #a6e3a1 !important; background-color: rgba(166,227,161,.1) !important; }
+.token.deleted  { color: #f38ba8 !important; background-color: rgba(243,139,168,.1) !important; }
+
+/* ══════════════════════════════════════════════
+   11. Obsidian 专属增强（reading view）
+══════════════════════════════════════════════ */
+.markdown-preview-view pre,
+.markdown-reading-view pre {
+    padding: 0 !important;
+    background-color: #161c2d !important;
+}
+/* Obsidian 有时会在 pre 上加 padding-top，抵消标题栏高度 */
+.markdown-preview-view pre > code,
+.markdown-reading-view pre > code {
+    padding-top: 1.2em !important;
+}
+
+/* ══════════════════════════════════════════════
+   12. Typora 专属增强
+══════════════════════════════════════════════ */
+.CodeMirror,
+.CodeMirror-scroll {
+    background-color: #161c2d !important;
+    color: #cdd6f4 !important;
+}
+
+/* ══════════════════════════════════════════════
+   13. 响应式
+══════════════════════════════════════════════ */
+@media (max-width: 640px) {
+    pre code, pre code.hljs {
+        font-size: 0.72rem !important;
+        padding: 1em 1.1em !important;
+    }
+    .code-copy-btn span { display: none !important; }
+    .code-copy-btn { padding: 3px 7px !important; }
+    pre[data-lang]::after { right: 46px !important; }
+}
