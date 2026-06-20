@@ -1,0 +1,39 @@
+name: Note Cleanup
+
+on:
+  schedule:
+    - cron: '0 3 * * 1'
+  workflow_dispatch:
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Generate cleanup report
+        run: |
+          echo "=== Note Cleanup Report ===" > cleanup_report.txt
+          echo "" >> cleanup_report.txt
+          
+          echo "1. **文件统计**:" >> cleanup_report.txt
+          echo "   - 总文件数: $(find . -name "*.md" | wc -l)" >> cleanup_report.txt
+          echo "   - 最近30天新增: $(find . -name "*.md" -mtime -30 | wc -l)" >> cleanup_report.txt
+          echo "   - 超过一年未更新: $(find . -name "*.md" -mtime +365 | wc -l)" >> cleanup_report.txt
+          
+          echo "" >> cleanup_report.txt
+          echo "2. **未完成任务**:" >> cleanup_report.txt
+          grep -r "TODO\|FIXME\|待办" --include="*.md" . 2>/dev/null | head -20 >> cleanup_report.txt || echo "   No TODO/FIXME found" >> cleanup_report.txt
+          
+          echo "" >> cleanup_report.txt
+          echo "3. **空文件**:" >> cleanup_report.txt
+          find . -name "*.md" -size 0 2>/dev/null >> cleanup_report.txt || echo "   No empty files" >> cleanup_report.txt
+
+      - name: Upload report
+        uses: actions/upload-artifact@v4
+        with:
+          name: cleanup-report
+          path: cleanup_report.txt
