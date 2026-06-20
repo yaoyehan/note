@@ -21,87 +21,153 @@ jobs:
           python-version: '3.11'
 
       - name: Install dependencies
-        run: |
-          pip install requests markdownify
+        run: pip install requests
 
       - name: Sync to CSDN
         env:
           CSDN_COOKIE: ${{ secrets.CSDN_COOKIE }}
-          CSDN_USER_ID: ${{ secrets.CSDN_USER_ID }}
         run: |
-          python3 - << 'EOF'
+          python3 - << 'PYTHON_SCRIPT'
           import os
           import re
           import requests
-          from markdownify import markdownify as md
 
           cookie = os.environ.get('CSDN_COOKIE')
-          user_id = os.environ.get('CSDN_USER_ID')
-
-          if not cookie or not user_id:
-              print("Error: CSDN_COOKIE or CSDN_USER_ID not set")
+          if not cookie:
+              print("Error: CSDN_COOKIE not set")
               exit(1)
 
+          print(f"Cookie length: {len(cookie)}")
+          print(f"Cookie contains UserName: {'UserName=' in cookie}")
+          print(f"Cookie contains UserInfo: {'UserInfo=' in cookie}")
+
           headers = {
-              'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+              'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
               'Cookie': cookie,
-              'Referer': 'https://blog.csdn.net/'
+              'Referer': 'https://blog.csdn.net/',
+              'Origin': 'https://blog.csdn.net',
+              'Accept': 'application/json, text/plain, */*',
+              'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8',
+              'Accept-Encoding': 'gzip, deflate, br',
+              'Connection': 'keep-alive'
           }
 
-          def get_csrf_token():
+          session = requests.Session()
+          session.headers.update(headers)
+
+          def get_csrf():
               try:
-                  resp = requests.get('https://blog.csdn.net/', headers=headers)
-                  match = re.search(r'"csrfToken":"([^"]+)"', resp.text)
-                  if match:
-                      return match.group(1)
-              except:
-                  pass
+                  print("Trying to get CSRF token...")
+                  resp = session.get('https://blog.csdn.net/', timeout=30)
+                  print(f"Response status: {resp.status_code}")
+                  print(f"Response content length: {len(resp.text)}")
+                  
+                  patterns = [
+                      r'"csrfToken":"([^"]+)"',
+                      r"csrfToken\s*=\s*'([^']+)'",
+                      r"csrfToken\s*=\s*\"([^\"]+)\"",
+                      r'csrf-token" content="([^"]+)"'
+                  ]
+                  
+                  for pattern in patterns:
+                      match = re.search(pattern, resp.text)
+                      if match:
+                          token = match.group(1)
+                          print(f"Found CSRF token with pattern: {pattern[:20]}...")
+                          return token
+                  
+                  print("CSRF token not found in response")
+                  print("First 500 chars of response:")
+                  print(resp.text[:500])
+                  
+              except Exception as e:
+                  print(f"Failed to get CSRF: {type(e).__name__}: {e}")
               return None
 
-          def publish_to_csdn(title, content):
-              csrf_token = get_csrf_token()
-              if not csrf_token:
-                  print(f"Warning: Cannot get CSRF token for {title}")
-                  return False
-
-              url = 'https://blog.csdn.net/phoenix/web/v1/article/submit'
-              
-              data = {
-                  'title': title,
-                  'description': content[:200],
-                  'markdown': content,
-                  'content': content,
-                  'tags': '',
-                  'categories': '',
-                  'status': 0,
-                  'origin': 1,
-                  'csrfToken': csrf_token
-              }
-
+          def check_login():
               try:
-                  resp = requests.post(url, headers=headers, data=data)
-                  result = resp.json()
-                  if result.get('code') == 200:
-                      print(f"✅ Published: {title}")
+                  resp = session.get('https://blog.csdn.net/', timeout=30)
+                  if '退出' in resp.text or 'logout' in resp.text.lower():
+                      print("✅ Login status: Logged in")
                       return True
                   else:
-                      print(f"❌ Failed: {title} - {result.get('message', 'Unknown error')}")
+                      print("❌ Login status: Not logged in")
+                      print("Check your CSDN cookie")
+                      return False
               except Exception as e:
-                  print(f"❌ Error: {title} - {str(e)}")
-              return False
+                  print(f"Login check failed: {e}")
+                  return False
 
-          for root, dirs, files in os.walk('.'):
-              for file in files:
-                  if file.endswith('.md') and not file.startswith('.'):
-                      filepath = os.path.join(root, file)
-                      
-                      with open(filepath, 'r', encoding='utf-8') as f:
-                          content = f.read()
-                      
-                      title = os.path.splitext(file)[0]
-                      print(f"Processing: {title}")
-                      
-                      publish_to_csdn(title, content)
+          print("\n=== Checking login status ===")
+          if not check_login():
+              print("Login failed, exiting")
+              exit(1)
 
-          print("\n=== Sync completed ===")
-          EOF
+          print("\n=== Getting CSRF token ===")
+          csrf_token = get_csrf()
+          if not csrf_token:
+              print("Error: Cannot get CSRF token")
+              exit(1)
+          print(f"CSRF token: {csrf_token[:20]}...")
+
+          url = 'https://blog.csdn.net/phoenix/web/v1/article/submit'
+          count = 0
+          success = 0
+          failed = 0
+
+          import glob
+          md_files = glob.glob('**/*.md', recursive=True)
+          
+          for filepath in md_files:
+              if '/.obsidian/' in filepath or '/.git/' in filepath:
+                  continue
+                  
+              try:
+                  with open(filepath, 'r', encoding='utf-8') as f:
+                      content = f.read()
+                  
+                  title = os.path.splitext(os.path.basename(filepath))[0]
+                  if len(content) < 10:
+                      print(f"Skipping short file: {title}")
+                      continue
+                  
+                  print(f"\nProcessing: {title}")
+                  
+                  data = {
+                      'title': title,
+                      'markdown': content,
+                      'content': content,
+                      'description': content[:100],
+                      'tags': '',
+                      'categories': '',
+                      'status': 0,
+                      'origin': 1,
+                      'csrfToken': csrf_token
+                  }
+
+                  resp = session.post(url, data=data, timeout=30)
+                  print(f"Response status: {resp.status_code}")
+                  
+                  try:
+                      result = resp.json()
+                      print(f"Response: {result}")
+                      
+                      if result.get('code') == 200:
+                          print(f"✅ Published: {title}")
+                          success += 1
+                      else:
+                          print(f"❌ Failed: {title} - {result.get('message', 'Unknown')}")
+                          failed += 1
+                  except:
+                      print(f"Response is not JSON")
+                      print(f"Response text: {resp.text[:500]}")
+                      failed += 1
+                  
+                  count += 1
+                  
+              except Exception as e:
+                  print(f"❌ Error processing {filepath}: {type(e).__name__}: {e}")
+                  failed += 1
+
+          print(f"\n=== Sync completed: {success} success, {failed} failed, {count} total ===")
+          PYTHON_SCRIPT
