@@ -1,0 +1,107 @@
+name: Sync to CSDN
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install requests markdownify
+
+      - name: Sync to CSDN
+        env:
+          CSDN_COOKIE: ${{ secrets.CSDN_COOKIE }}
+          CSDN_USER_ID: ${{ secrets.CSDN_USER_ID }}
+        run: |
+          python3 - << 'EOF'
+          import os
+          import re
+          import requests
+          from markdownify import markdownify as md
+
+          cookie = os.environ.get('CSDN_COOKIE')
+          user_id = os.environ.get('CSDN_USER_ID')
+
+          if not cookie or not user_id:
+              print("Error: CSDN_COOKIE or CSDN_USER_ID not set")
+              exit(1)
+
+          headers = {
+              'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+              'Cookie': cookie,
+              'Referer': 'https://blog.csdn.net/'
+          }
+
+          def get_csrf_token():
+              try:
+                  resp = requests.get('https://blog.csdn.net/', headers=headers)
+                  match = re.search(r'"csrfToken":"([^"]+)"', resp.text)
+                  if match:
+                      return match.group(1)
+              except:
+                  pass
+              return None
+
+          def publish_to_csdn(title, content):
+              csrf_token = get_csrf_token()
+              if not csrf_token:
+                  print(f"Warning: Cannot get CSRF token for {title}")
+                  return False
+
+              url = 'https://blog.csdn.net/phoenix/web/v1/article/submit'
+              
+              data = {
+                  'title': title,
+                  'description': content[:200],
+                  'markdown': content,
+                  'content': content,
+                  'tags': '',
+                  'categories': '',
+                  'status': 0,
+                  'origin': 1,
+                  'csrfToken': csrf_token
+              }
+
+              try:
+                  resp = requests.post(url, headers=headers, data=data)
+                  result = resp.json()
+                  if result.get('code') == 200:
+                      print(f"✅ Published: {title}")
+                      return True
+                  else:
+                      print(f"❌ Failed: {title} - {result.get('message', 'Unknown error')}")
+              except Exception as e:
+                  print(f"❌ Error: {title} - {str(e)}")
+              return False
+
+          for root, dirs, files in os.walk('.'):
+              for file in files:
+                  if file.endswith('.md') and not file.startswith('.'):
+                      filepath = os.path.join(root, file)
+                      
+                      with open(filepath, 'r', encoding='utf-8') as f:
+                          content = f.read()
+                      
+                      title = os.path.splitext(file)[0]
+                      print(f"Processing: {title}")
+                      
+                      publish_to_csdn(title, content)
+
+          print("\n=== Sync completed ===")
+          EOF
