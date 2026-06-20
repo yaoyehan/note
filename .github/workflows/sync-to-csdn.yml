@@ -38,8 +38,6 @@ jobs:
               exit(1)
 
           print(f"Cookie length: {len(cookie)}")
-          print(f"Cookie contains UserName: {'UserName=' in cookie}")
-          print(f"Cookie contains UserInfo: {'UserInfo=' in cookie}")
 
           headers = {
               'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
@@ -47,9 +45,8 @@ jobs:
               'Referer': 'https://blog.csdn.net/',
               'Origin': 'https://blog.csdn.net',
               'Accept': 'application/json, text/plain, */*',
-              'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8',
-              'Accept-Encoding': 'gzip, deflate, br',
-              'Connection': 'keep-alive'
+              'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+              'X-Requested-With': 'XMLHttpRequest'
           }
 
           session = requests.Session()
@@ -57,58 +54,38 @@ jobs:
 
           def get_csrf():
               try:
-                  print("Trying to get CSRF token...")
+                  print("Getting CSRF token...")
                   resp = session.get('https://blog.csdn.net/', timeout=30)
                   print(f"Response status: {resp.status_code}")
-                  print(f"Response content length: {len(resp.text)}")
                   
                   patterns = [
-                      r'"csrfToken":"([^"]+)"',
+                      r'"csrfToken"\s*:\s*"([^"]+)"',
                       r"csrfToken\s*=\s*'([^']+)'",
-                      r"csrfToken\s*=\s*\"([^\"]+)\"",
-                      r'csrf-token" content="([^"]+)"'
+                      r'csrf-token"[^>]*content="([^"]+)"',
+                      r'csrfToken":"([^"]+)"'
                   ]
                   
                   for pattern in patterns:
                       match = re.search(pattern, resp.text)
                       if match:
                           token = match.group(1)
-                          print(f"Found CSRF token with pattern: {pattern[:20]}...")
+                          print(f"CSRF token found: {token[:30]}...")
                           return token
                   
-                  print("CSRF token not found in response")
-                  print("First 500 chars of response:")
-                  print(resp.text[:500])
+                  print("CSRF token not found, trying alternative method...")
+                  match = re.search(r'<meta[^>]+name=["\']csrf-token["\'][^>]+content=["\']([^"\']+)["\']', resp.text)
+                  if match:
+                      print(f"CSRF token from meta tag: {match.group(1)[:30]}...")
+                      return match.group(1)
                   
               except Exception as e:
-                  print(f"Failed to get CSRF: {type(e).__name__}: {e}")
+                  print(f"Failed to get CSRF: {e}")
               return None
 
-          def check_login():
-              try:
-                  resp = session.get('https://blog.csdn.net/', timeout=30)
-                  if '退出' in resp.text or 'logout' in resp.text.lower():
-                      print("✅ Login status: Logged in")
-                      return True
-                  else:
-                      print("❌ Login status: Not logged in")
-                      print("Check your CSDN cookie")
-                      return False
-              except Exception as e:
-                  print(f"Login check failed: {e}")
-                  return False
-
-          print("\n=== Checking login status ===")
-          if not check_login():
-              print("Login failed, exiting")
-              exit(1)
-
-          print("\n=== Getting CSRF token ===")
           csrf_token = get_csrf()
           if not csrf_token:
-              print("Error: Cannot get CSRF token")
-              exit(1)
-          print(f"CSRF token: {csrf_token[:20]}...")
+              print("Warning: Cannot get CSRF token, trying without it...")
+              csrf_token = ''
 
           url = 'https://blog.csdn.net/phoenix/web/v1/article/submit'
           count = 0
@@ -141,32 +118,58 @@ jobs:
                       'tags': '',
                       'categories': '',
                       'status': 0,
-                      'origin': 1,
-                      'csrfToken': csrf_token
+                      'origin': 1
                   }
+                  
+                  if csrf_token:
+                      data['csrfToken'] = csrf_token
 
                   resp = session.post(url, data=data, timeout=30)
                   print(f"Response status: {resp.status_code}")
                   
                   try:
                       result = resp.json()
-                      print(f"Response: {result}")
+                      code = result.get('code')
+                      msg = result.get('message', '')
                       
-                      if result.get('code') == 200:
+                      if code == 200:
                           print(f"✅ Published: {title}")
                           success += 1
+                      elif '未登录' in msg or '登录' in msg or 'login' in msg.lower():
+                          print(f"❌ Login failed: {msg}")
+                          print("Please update your CSDN cookie")
+                          exit(1)
+                      elif 'csrf' in msg.lower() or 'token' in msg.lower():
+                          print(f"❌ CSRF error: {msg}")
+                          csrf_token = get_csrf()
+                          if csrf_token:
+                              data['csrfToken'] = csrf_token
+                              resp = session.post(url, data=data, timeout=30)
+                              result = resp.json()
+                              if result.get('code') == 200:
+                                  print(f"✅ Retry published: {title}")
+                                  success += 1
+                              else:
+                                  print(f"❌ Still failed: {result.get('message')}")
+                                  failed += 1
+                          else:
+                              failed += 1
                       else:
-                          print(f"❌ Failed: {title} - {result.get('message', 'Unknown')}")
+                          print(f"❌ Failed: {msg}")
                           failed += 1
                   except:
                       print(f"Response is not JSON")
-                      print(f"Response text: {resp.text[:500]}")
+                      text = resp.text[:500]
+                      print(f"Response text: {text}")
+                      if '登录' in text or 'login' in text.lower():
+                          print("❌ Not logged in")
+                          exit(1)
                       failed += 1
                   
                   count += 1
                   
               except Exception as e:
-                  print(f"❌ Error processing {filepath}: {type(e).__name__}: {e}")
+                  print(f"❌ Error processing {filepath}: {e}")
                   failed += 1
 
           print(f"\n=== Sync completed: {success} success, {failed} failed, {count} total ===")
